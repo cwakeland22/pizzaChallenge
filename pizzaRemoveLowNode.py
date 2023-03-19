@@ -1,9 +1,9 @@
 # Uncomment import statements if libraries are installed and you want to see graph visualization of small examples
-#import networkx as nx
-#import matplotlib.pyplot as plt
+import networkx as nx
+import matplotlib.pyplot as plt
 
 # uncomment this class if you want Graph visualization
-'''class GraphVisualization:
+class GraphVisualization:
     def __init__(self):
         self.visual = []
         self.nodes = []
@@ -21,7 +21,7 @@
             G.add_node(n)
         G.add_edges_from(self.visual)
         nx.draw_networkx(G)
-        plt.show()'''
+        plt.show()
 
 class Customer:
     def __init__(self, likes = [], dislikes = [], name = ''):
@@ -35,7 +35,7 @@ class Pizza:
         self.cServe = cServe
 
 def parseFile():
-    file = open('d_difficult.in.txt', mode='r') # replace with file you want to read
+    file = open('e_elaborate.in.txt', mode='r') # replace with file you want to read
 
     lines = file.readlines()
     people = []
@@ -75,6 +75,7 @@ def parseFile():
 
             p = Customer(likeList, disList, 'p' + str(int(linNum/2)-1))
             people.append(p)
+            
             
         linNum+=1
 
@@ -116,7 +117,7 @@ def makeGraph(dictGraph):
                 if l in p.dislikes and p.name not in antiPeople and disP.name not in antiPeople:
                     antiPeople.append(disP.name)
         
-        #print(p.name)
+        print(p.name)
         dictGraph[p.name] = antiPeople
 
     
@@ -124,31 +125,41 @@ def makeGraph(dictGraph):
     # visualizeGraph(dictGraph)
     maxEdges = 1 # placeholder value
 
-    # remove nodes from graph until all nodes are isolated and have no edges with other nodes
-    # i.e., all nodes are compatible with all other nodes
-    while( maxEdges > 0):
+
+
+    maxEdges = -1
+    for v in dictGraph.values():
+        if len(v) > maxEdges:
+            maxEdges = len(v)
+
+
+    piz = Pizza()
+
+
+    cList = []
+
+    while(dictGraph):
         
-        dictGraph, pL = removePickyCustomer(dictGraph)
+        
+        for v in dictGraph.values():
+            if len(v) > maxEdges:
+                maxEdges = len(v)
+
+        dictGraph, pL, cList = removeLowScoreNode(dictGraph, maxEdges, cList)
         # more Graph visualization
         # visualizeGraph(dictGraph)
 
-        # find max edges
-        # only need to go through this loop if only nodes with single edges are left,
-        # saves a little computation time
-        if pL <= 1:
-            maxEdges = -1
-            for v in dictGraph.values():
-                if len(v) > maxEdges:
-                    maxEdges = len(v)
+        
+        
     
 
-    piz = Pizza([],len(dictGraph))
-
+    piz = Pizza([],len(cList))
     for p in people:
-        if p.name in dictGraph:
+        if p.name in cList:
             for l in p.likes:
                 if l not in piz.toppings:
                     piz.toppings.append(l)
+    
     
     print(str(len(piz.toppings)) + " " + str(piz.toppings))
     print(str(piz.cServe) + " Customers served")
@@ -177,9 +188,50 @@ def removePickyCustomer(people):
     
     return people, pickEdges
 
+def removeLowScoreNode(people, lowScore, cList):
+
+    toRemove = None
+    for k in people:
+        if len(people[k]) <= lowScore:
+            lowScore = len(people[k])
+            toRemove = k
+    
+    toRemoveNeigh = people[toRemove]
+    people.pop(toRemove,None)
+
+    cList.append(toRemove)
+
+    
+    for k in people:
+        for n in toRemoveNeigh:
+            if n in people[k]:
+                people[k].remove(n)
+            
+    for n in toRemoveNeigh:
+        if n in people:
+            people.pop(n,None)
+
+    print("Customer served: " + toRemove)
+    print("Customers removed: " + str(toRemoveNeigh))
+    return people, lowScore, cList
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Uncomment for graph visualization
-'''def visualizeGraph(dictGraph):
+def visualizeGraph(dictGraph):
     G = GraphVisualization()
     for p in dictGraph:
         if not dictGraph[p]:
@@ -187,7 +239,7 @@ def removePickyCustomer(people):
         for v in dictGraph[p]:
             G.addEdge(p,v)
         
-    G.visualize()'''
+    G.visualize()
 
 
 if __name__ == '__main__':
