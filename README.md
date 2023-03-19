@@ -1,4 +1,5 @@
-# One of many solutions for Google's 2022 Hash code one pizza problem
+# Google Hash code One Pizza
+
 This solution uses a graph of customers and creates edges based on which other 
 customers are incompatible based on likes/dislikes of pizza toppings
 
