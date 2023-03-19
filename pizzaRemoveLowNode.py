@@ -35,7 +35,7 @@ class Pizza:
         self.cServe = cServe
 
 def parseFile():
-    file = open('e_elaborate.in.txt', mode='r') # replace with file you want to read
+    file = open('d_difficult.in.txt', mode='r') # replace with file you want to read
 
     lines = file.readlines()
     people = []
@@ -117,7 +117,7 @@ def makeGraph(dictGraph):
                 if l in p.dislikes and p.name not in antiPeople and disP.name not in antiPeople:
                     antiPeople.append(disP.name)
         
-        print(p.name)
+        # print(p.name)
         dictGraph[p.name] = antiPeople
 
     
@@ -148,10 +148,6 @@ def makeGraph(dictGraph):
         dictGraph, pL, cList = removeLowScoreNode(dictGraph, maxEdges, cList)
         # more Graph visualization
         # visualizeGraph(dictGraph)
-
-        
-        
-    
 
     piz = Pizza([],len(cList))
     for p in people:
@@ -211,8 +207,8 @@ def removeLowScoreNode(people, lowScore, cList):
         if n in people:
             people.pop(n,None)
 
-    print("Customer served: " + toRemove)
-    print("Customers removed: " + str(toRemoveNeigh))
+    # print("Customer served: " + toRemove)
+    # print("Customers removed: " + str(toRemoveNeigh))
     return people, lowScore, cList
 
     

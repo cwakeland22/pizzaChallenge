@@ -9,11 +9,11 @@ the graph and get an idea of what nodes are being removed each iteration<br />
 Best pizza obtained using this method:<br />
 
 d_difficutly.in.txt:<br />
-  Toppings: 356<br />
-  Customers served: 1571<br />
-  Runtime: 75 seconds<br />
+  Toppings: 338<br />
+  Customers served: 1701<br />
+  Runtime: 73 seconds<br />
   <br />
 e_elaborate.in.txt:<br />
-  Toppings: 4080<br />
-  Customers served: 1932<br />
+  Toppings: 4203<br />
+  Customers served: 2018<br />
   Runtime: 17 seconds<br />
